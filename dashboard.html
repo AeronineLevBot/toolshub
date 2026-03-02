@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mon Dashboard — ToolsHub</title>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/reset.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="dash-nav">
+    <a href="index.html" class="dash-logo">⚡ ToolsHub</a>
+    <div class="dash-nav-right">
+      <a href="docs.html" class="dash-nav-link">📖 Documentation</a>
+      <a href="index.html" class="dash-nav-link">🛒 Catalogue</a>
+      <div class="dash-user" id="dashUser">
+        <img class="dash-avatar" id="dashAvatar" src="" alt=""/>
+        <span class="dash-username" id="dashUsername"></span>
+        <a href="/auth/logout" class="dash-logout">Déconnexion</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dash-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="dash-sidebar">
+
+      <!-- Section utilisateur -->
+      <div class="admin-side-label">Navigation</div>
+      <button class="dash-side-btn active" onclick="showTab('purchases')">
+        🧰 Mes outils
+      </button>
+      <button class="dash-side-btn" onclick="showTab('servers')">
+        🖥️ Mes serveurs
+      </button>
+      <button class="dash-side-btn" onclick="showTab('billing')">
+        💳 Facturation
+      </button>
+      <button class="dash-side-btn" onclick="showTab('settings')">
+        ⚙️ Paramètres
+      </button>
+
+      <!-- Section admin injectée dynamiquement -->
+      <div id="adminSidebarSlot"></div>
+
+      <div class="dash-side-sep"></div>
+      <a href="docs.html" class="dash-side-btn">📖 Documentation</a>
+      <a href="index.html" class="dash-side-btn">🛒 Catalogue</a>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dash-main">
+
+      <!-- TAB : MES OUTILS -->
+      <section class="dash-tab active" id="tab-purchases">
+        <div class="dash-section-header">
+          <div>
+            <h1 class="dash-title">Mes outils</h1>
+            <p class="dash-subtitle">Gérez et configurez vos outils actifs.</p>
+          </div>
+          <a href="index.html" class="btn-primary">+ Ajouter un outil</a>
+        </div>
+        <div class="dash-empty" id="emptyPurchases">
+          <div class="dash-empty-icon">🧰</div>
+          <h3>Aucun outil actif</h3>
+          <p>Vous n'avez encore souscrit à aucun outil.</p>
+          <a href="index.html" class="btn-primary">Découvrir le catalogue</a>
+        </div>
+        <div class="dash-tools-grid" id="purchasedTools"></div>
+      </section>
+
+      <!-- TAB : MES SERVEURS -->
+      <section class="dash-tab" id="tab-servers">
+        <div class="dash-section-header">
+          <div>
+            <h1 class="dash-title">Mes serveurs</h1>
+            <p class="dash-subtitle">Serveurs Discord où vous êtes administrateur.</p>
+          </div>
+        </div>
+        <div class="dash-servers-loading" id="serversLoading">
+          <div class="servers-spinner"></div>
+          <span>Chargement de vos serveurs…</span>
+        </div>
+        <div class="dash-empty" id="emptyServers">
+          <div class="dash-empty-icon">🖥️</div>
+          <h3>Aucun serveur trouvé</h3>
+          <p>Vous n'êtes administrateur d'aucun serveur Discord.</p>
+        </div>
+        <div class="dash-servers-grid" id="serversList"></div>
+      </section>
+
+      <!-- TAB : FACTURATION -->
+      <section class="dash-tab" id="tab-billing">
+        <div class="dash-section-header">
+          <div>
+            <h1 class="dash-title">Facturation</h1>
+            <p class="dash-subtitle">Historique de vos achats et abonnements.</p>
+          </div>
+        </div>
+        <div class="dash-billing-list" id="billingList"></div>
+        <div class="dash-empty" id="emptyBilling">
+          <div class="dash-empty-icon">💳</div>
+          <h3>Aucune transaction</h3>
+          <p>Vos achats apparaîtront ici.</p>
+        </div>
+      </section>
+
+      <!-- TAB : PARAMÈTRES -->
+      <section class="dash-tab" id="tab-settings">
+        <div class="dash-section-header">
+          <div>
+            <h1 class="dash-title">Paramètres</h1>
+            <p class="dash-subtitle">Gérez votre compte ToolsHub.</p>
+          </div>
+        </div>
+        <div class="dash-settings-card">
+          <h2 class="dash-settings-title">Compte Discord</h2>
+          <div class="dash-settings-row">
+            <img class="settings-avatar" id="settingsAvatar" src="" alt=""/>
+            <div>
+              <div class="settings-username" id="settingsUsername"></div>
+              <div class="settings-email"    id="settingsEmail"></div>
+            </div>
+          </div>
+        </div>
+        <div class="dash-settings-card danger-card">
+          <h2 class="dash-settings-title">Zone dangereuse</h2>
+          <p class="dash-settings-desc">
+            La suppression de votre compte est irréversible. Toutes vos données
+            et abonnements seront perdus.
+          </p>
+          <button class="btn-danger">Supprimer mon compte</button>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════
+           TABS ADMIN
+      ═══════════════════════════════ -->
+
+      <!-- TAB : VUE D'ENSEMBLE -->
+      <section class="dash-tab" id="tab-admin">
+        <div class="dash-section-header">
+          <div>
+            <h1 class="dash-title">📊 Vue d'ensemble</h1>
+            <p class="dash-subtitle">Statistiques globales de la plateforme ToolsHub.</p>
+          </div>
+          <button class="btn-primary" onclick="loadAdminData()">🔄 Actualiser</button>
+        </div>
+        <div class="admin-stats-grid">
+          <div class="admin-stat-card">
+            <div class="admin-stat-icon">👥</div>
+            <div class="admin-stat-value" id="statUsers">—</div>
+            <div class="admin-stat-label">Utilisateurs</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-icon">🧰</div>
+            <div class="admin-stat-value" id="statPurchases">—</div>
+            <div class="admin-stat-label">Licences actives</div>
+          </div>
+          <div class="admin-stat-card">
+            <div class="admin-stat-icon">💰</div>
+            <div class="admin-stat-value" id="statRevenue">—</div>
+            <div class="admin-stat-label">Revenus totaux</div>
+          </div>
+        </div>
+        <!-- Aperçu rapide des derniers utilisateurs -->
+        <div class="admin-section-title" style="margin-top:8px">Derniers inscrits</div>
+        <div id="adminRecentList" class="admin-users-list">
+          <div class="admin-loading">Chargement…</div>
+        </div>
+      </section>
+
+      <!-- TAB : UTILISATEURS -->
+      <section class="dash-tab" id="tab-admin-users">
+        <div class="dash-section-header">
+          <div>
+            <h1 class="dash-title">👥 Utilisateurs</h1>
+            <p class="dash-subtitle">Gestion complète des comptes utilisateurs.</p>
+          </div>
+          <button class="btn-primary" onclick="loadAdminUsers()">🔄 Actualiser</button>
+        </div>
+        <div class="admin-search-bar">
+          <input
+            class="admin-search-input"
+            id="adminSearchInput"
+            type="text"
+            placeholder="🔍 Rechercher par nom ou ID…"
+            oninput="filterAdminUsers()"
+          />
+        </div>
+        <div id="adminUsersList" class="admin-users-list">
+          <div class="admin-loading">Chargement…</div>
+        </div>
+      </section>
+
+      <!-- TAB : LICENCES -->
+      <section class="dash-tab" id="tab-admin-licenses">
+        <div class="dash-section-header">
+          <div>
+            <h1 class="dash-title">🧰 Licences</h1>
+            <p class="dash-subtitle">Vue globale de toutes les licences actives.</p>
+          </div>
+          <button class="btn-primary" onclick="loadAdminLicenses()">🔄 Actualiser</button>
+        </div>
+        <div id="adminLicensesList" class="admin-users-list">
+          <div class="admin-loading">Chargement…</div>
+        </div>
+      </section>
+
+      <!-- TAB : ARTICLES / OUTILS -->
+      <section class="dash-tab" id="tab-admin-tools">
+        <div class="dash-section-header">
+          <div>
+            <h1 class="dash-title">🧩 Articles / Outils</h1>
+            <p class="dash-subtitle">Gérez le catalogue d'outils de la plateforme.</p>
+          </div>
+        </div>
+        <div class="dash-tools-grid" id="adminToolsCatalog"></div>
+      </section>
+
+      <!-- TAB : SÉCURITÉ -->
+      <section class="dash-tab" id="tab-admin-security">
+        <div class="dash-section-header">
+          <div>
+            <h1 class="dash-title">🔒 Sécurité</h1>
+            <p class="dash-subtitle">Accès admin, logs et actions sensibles.</p>
+          </div>
+        </div>
+        <div class="dash-settings-card">
+          <h2 class="dash-settings-title">Administrateurs actuels</h2>
+          <div id="adminSecurityAdminList" class="admin-users-list" style="margin-top:0"></div>
+        </div>
+        <div class="dash-settings-card danger-card" style="margin-top:16px">
+          <h2 class="dash-settings-title">Actions globales</h2>
+          <p class="dash-settings-desc">Ces actions affectent l'ensemble de la plateforme.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn-danger" onclick="adminPurgeInactiveUsers()">
+              🗑️ Purger comptes inactifs
+            </button>
+            <button class="btn-danger" onclick="adminRevokeAllExpired()">
+              🚫 Révoquer licences expirées
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ══════════════════════════════════
+       MODAL : CONFIGURATION SERVEUR
+  ══════════════════════════════════ -->
+  <div class="modal-overlay" id="serverModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <img class="modal-server-icon" id="modalServerIcon" src="" alt=""/>
+          <div>
+            <h2 class="modal-title" id="modalServerName"></h2>
+            <span class="modal-server-id" id="modalServerId"></span>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeServerModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-section">
+          <h3 class="modal-section-title">🤖 Inviter le bot</h3>
+          <p class="modal-section-desc">Ajoutez le bot ToolsHub à ce serveur pour activer vos outils.</p>
+          <a class="btn-primary" id="modalInviteLink" href="#" target="_blank">➕ Inviter sur ce serveur</a>
+        </div>
+        <div class="modal-section">
+          <h3 class="modal-section-title">🧰 Outils actifs sur ce serveur</h3>
+          <div class="modal-tools-list" id="modalToolsList"></div>
+        </div>
+        <div class="modal-section">
+          <h3 class="modal-section-title">⚙️ Paramètres généraux</h3>
+          <div class="modal-setting">
+            <div class="modal-setting-info">
+              <span class="modal-setting-label">Préfixe des commandes</span>
+              <span class="modal-setting-desc">Caractère utilisé avant chaque commande bot.</span>
+            </div>
+            <input class="modal-input" id="settingPrefix" type="text" value="!" maxlength="3" placeholder="!"/>
+          </div>
+          <div class="modal-setting">
+            <div class="modal-setting-info">
+              <span class="modal-setting-label">Langue du bot</span>
+              <span class="modal-setting-desc">Langue des réponses et messages du bot.</span>
+            </div>
+            <select class="modal-select" id="settingLang">
+              <option value="fr" selected>🇫🇷 Français</option>
+              <option value="en">🇬🇧 English</option>
+              <option value="es">🇪🇸 Español</option>
+              <option value="de">🇩🇪 Deutsch</option>
+            </select>
+          </div>
+          <div class="modal-setting">
+            <div class="modal-setting-info">
+              <span class="modal-setting-label">Canal de logs</span>
+              <span class="modal-setting-desc">Canal où le bot enverra ses notifications.</span>
+            </div>
+            <input class="modal-input" id="settingLogChannel" type="text" placeholder="#logs" value="#logs"/>
+          </div>
+          <div class="modal-setting">
+            <div class="modal-setting-info">
+              <span class="modal-setting-label">Mode silencieux</span>
+              <span class="modal-setting-desc">Désactive les messages de confirmation du bot.</span>
+            </div>
+            <label class="modal-toggle">
+              <input type="checkbox" id="settingSilent"/>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="modal-setting">
+            <div class="modal-setting-info">
+              <span class="modal-setting-label">Notifications DM</span>
+              <span class="modal-setting-desc">Envoyer les alertes importantes en message privé aux admins.</span>
+            </div>
+            <label class="modal-toggle">
+              <input type="checkbox" id="settingDM" checked/>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-tool" onclick="closeServerModal()">Annuler</button>
+        <button class="btn-primary" onclick="saveServerConfig()">💾 Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       MODAL : GÉRER UN UTILISATEUR (ADMIN)
+  ══════════════════════════════════ -->
+  <div class="modal-overlay" id="adminUserModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <img class="modal-server-icon" id="adminModalAvatar" src="" alt=""/>
+          <div>
+            <h2 class="modal-title" id="adminModalUsername"></h2>
+            <span class="modal-server-id" id="adminModalId"></span>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeAdminUserModal()">✕</button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Infos compte -->
+        <div class="modal-section">
+          <h3 class="modal-section-title">👤 Informations du compte</h3>
+          <div class="admin-info-grid">
+            <div class="admin-info-item">
+              <span class="admin-info-label">Email</span>
+              <span class="admin-info-value" id="adminModalEmail">—</span>
+            </div>
+            <div class="admin-info-item">
+              <span class="admin-info-label">Inscrit le</span>
+              <span class="admin-info-value" id="adminModalCreatedAt">—</span>
+            </div>
+            <div class="admin-info-item">
+              <span class="admin-info-label">Licences actives</span>
+              <span class="admin-info-value" id="adminModalToolCount">—</span>
+            </div>
+            <div class="admin-info-item">
+              <span class="admin-info-label">Dépenses totales</span>
+              <span class="admin-info-value" id="adminModalTotalSpent">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Licences possédées -->
+        <div class="modal-section">
+          <h3 class="modal-section-title">🧰 Licences possédées</h3>
+          <div id="adminModalTools" class="modal-tools-list"></div>
+        </div>
+
+        <!-- Ajouter une licence -->
+        <div class="modal-section">
+          <h3 class="modal-section-title">➕ Ajouter une licence</h3>
+          <div class="admin-add-tool-form">
+            <select class="modal-select" id="adminAddToolSelect" style="flex:1">
+              <option value="">— Choisir un outil —</option>
+              <option value="vocal-rank-tracker|Vocal Rank Tracker|0">🎙️ Vocal Rank Tracker (Gratuit)</option>
+              <option value="dmall|DMall|4.99">📨 DMall (4.99€/mois)</option>
+              <option value="stats-dashboard|Stats Dashboard|0">📊 Stats Dashboard (Gratuit)</option>
+              <option value="ai-analyze|AI-Analyze|7.99">🤖 AI-Analyze (7.99€/mois)</option>
+              <option value="roleguard|RoleGuard|4.99">🛡️ RoleGuard (4.99€/mois)</option>
+              <option value="blacklistguard|BlacklistGuard|12.99">🚫 BlacklistGuard (12.99€/mois)</option>
+            </select>
+            <button class="btn-primary" onclick="adminAddTool()">➕ Ajouter</button>
+          </div>
+        </div>
+
+        <!-- Note interne -->
+        <div class="modal-section">
+          <h3 class="modal-section-title">📝 Note interne</h3>
+          <textarea
+            class="admin-note-input"
+            id="adminModalNote"
+            placeholder="Ajouter une note interne sur cet utilisateur…"
+            rows="3"
+          ></textarea>
+          <button class="btn-tool primary" style="margin-top:8px" onclick="adminSaveNote()">
+            💾 Sauvegarder la note
+          </button>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn-danger" style="margin-right:auto" onclick="adminRevokeAllLicenses()">
+          🚫 Révoquer tout
+        </button>
+        <button class="btn-danger" onclick="adminDeleteUser()">
+          🗑️ Supprimer l'utilisateur
+        </button>
+        <button class="btn-tool" onclick="closeAdminUserModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ToolsHub</title>
+  <meta name="description" content="Boostez votre utilisation avec nos outils premium : Vocal Rank Tracker, DMall, Stats Dashboard et plus. Facile à installer, sans abonnement mensuel."/>
+  <meta property="og:image" content="https://cdn.discordapp.com/attachments/856942360666701855/1478010278498013305/image-removebg-preview.png?ex=69a6d7d6&is=69a58656&hm=b26b2b616b435a088e391fbf8c9a86a8a88faca0e4eb5fb49773e6362b0232da&"/> <!-- Ton image 1200x630 -->
+  <link rel="stylesheet" href="css/reset.css"/>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/components.css"/>
+  <link rel="icon" type="image/png" href="/favicon.png">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">⚡ ToolsHub</div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#tools">Outils</a></li>
+        <li><a href="#pricing">Tarifs</a></li>
+        <li><a href="docs.html">Docs</a></li>
+      </ul>
+      <div class="nav-actions">
+
+        <!-- Zone auth : remplie dynamiquement par auth.js -->
+        <div class="auth-zone" id="authZone"></div>
+
+        <button class="cart-btn" id="cartBtn">
+          🛒 <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="burger" id="burger">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-badge">
+      <span class="pulse-dot"></span>
+      <span id="activeCount">1 247</span> utilisateurs actifs
+    </div>
+    <h1 class="hero-title">
+      Tous vos <span class="gradient-text">outils</span><br/>en un seul endroit
+    </h1>
+    <p class="hero-sub">
+      Choisissez parmi notre catalogue de solutions puissantes.<br/>
+      Déployez en secondes, payez uniquement ce que vous utilisez.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary btn-lg"
+        onclick="document.getElementById('tools').scrollIntoView({behavior:'smooth'})">
+        🚀 Découvrir les outils
+      </button>
+      <a href="docs.html" class="btn-ghost btn-lg">📖 Documentation</a>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-number" data-target="42">0</div>
+        <div class="stat-label">Outils disponibles</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="12500">0</div>
+        <div class="stat-label">Utilisateurs actifs</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="99" data-suffix="%">0</div>
+        <div class="stat-label">Uptime garanti</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="24" data-suffix="/7">0</div>
+        <div class="stat-label">Support</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOLS SECTION -->
+  <section class="tools-section" id="tools">
+    <div class="section-inner">
+      <div class="section-header">
+        <div>
+          <div class="section-title">🛠️ Nos Outils</div>
+          <div class="section-sub">Cliquez sur un outil pour voir les détails</div>
+        </div>
+        <div class="filter-tabs" id="filterTabs"></div>
+      </div>
+      <div class="tools-grid" id="toolsGrid"></div>
+    </div>
+  </section>
+
+  <!-- CART OVERLAY + SIDEBAR -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+      <span>🛒 Mon Panier</span>
+      <button class="cart-close" id="cartClose">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total / mois</span>
+        <span class="cart-total-price" id="cartTotal">0€</span>
+      </div>
+      <button class="btn-primary btn-full" id="btnCheckout">
+        💳 Passer au paiement
+      </button>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="checkoutModal">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- TOOL DETAIL MODAL -->
+  <div class="tool-modal-overlay" id="toolModalOverlay" onclick="handleToolOverlayClick(event)">
+    <div class="tool-modal" id="toolModal">
+      <div id="toolModalContent"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo">⚡ ToolsHub</div>
+      <p class="footer-copy">© 2026 ToolsHub — Tous droits réservés</p>
+      <div class="footer-links">
+        <a href="#">CGU</a>
+        <a href="#">Confidentialité</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/tools.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/app.js"></script>
+  <!-- Auth en dernier pour ne pas bloquer le reste -->
+  <script src="js/auth.js"></script>
+</body>
+</html>

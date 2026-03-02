@@ -1,0 +1,25 @@
+{
+  "users": {
+    "777325892322066472": {
+      "id": "777325892322066472",
+      "username": "fahdzz",
+      "email": "soukifahdkaz@gmail.com",
+      "avatar": "3be6e83bdcdb68981f5870b131f3fcdb",
+      "purchases": [
+        {
+          "toolId": 3,
+          "toolName": "Stats Dashboard",
+          "price": 0,
+          "purchasedAt": "2026-03-02T09:58:20.955Z"
+        },
+        {
+          "toolId": 1,
+          "toolName": "Vocal Rank Tracker",
+          "price": 0,
+          "purchasedAt": "2026-03-02T10:09:40.171Z"
+        }
+      ],
+      "createdAt": "2026-03-02T09:57:14.802Z"
+    }
+  }
+}

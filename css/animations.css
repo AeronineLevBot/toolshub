@@ -1,0 +1,24 @@
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(34, 211, 165, 0.5); }
+  50%      { box-shadow: 0 0 0 6px rgba(34, 211, 165, 0); }
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0px); }
+  50%      { transform: translateY(-8px); }
+}
+
+@keyframes popIn {
+  0%   { transform: scale(0.85); opacity: 0; }
+  70%  { transform: scale(1.03); }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
+.fade-in-up { animation: fadeInUp 0.5s ease both; }
+.pop-in     { animation: popIn 0.35s ease both; }
+.float      { animation: float 3s ease-in-out infinite; }

@@ -1,0 +1,26 @@
+:root {
+  --bg:        #0a0d1a;
+  --bg2:       #0e1228;
+  --card:      #111827;
+  --card-h:    #141b2d;
+  --border:    rgba(99, 120, 255, 0.15);
+  --border-h:  rgba(99, 120, 255, 0.4);
+  --accent:    #6378ff;
+  --accent2:   #a78bfa;
+  --green:     #22d3a5;
+  --red:       #f87171;
+  --yellow:    #fbbf24;
+  --text:      #e2e8f0;
+  --muted:     #6b7280;
+  --radius:    14px;
+  --radius-sm: 8px;
+  --font:      'Inter', system-ui, -apple-system, sans-serif;
+  --transition: 0.25s ease;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Documentation — ToolsHub</title>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/reset.css"/>
+  <link rel="stylesheet" href="css/docs.css"/>
+<link rel="icon" type="image/png" href="/favicon.png">
+
+</head>
+<body>
+
+  <!-- TOP NAV -->
+  <nav class="doc-nav">
+    <div class="doc-nav-left">
+      <a href="index.html" class="doc-back">← Retour</a>
+      <div class="doc-nav-logo">⚡ ToolsHub <span class="doc-nav-badge">Docs</span></div>
+    </div>
+    <div class="doc-nav-center">
+      <div class="doc-search-wrap">
+        <span class="doc-search-icon">🔍</span>
+        <input type="text" id="docSearch" class="doc-search" placeholder="Rechercher dans la documentation..."/>
+        <kbd class="doc-search-kbd">⌘K</kbd>
+      </div>
+    </div>
+    <div class="doc-nav-right">
+      <a href="index.html" class="btn-doc-nav">🛒 Catalogue</a>
+    </div>
+  </nav>
+
+  <div class="doc-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="doc-sidebar" id="docSidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Démarrage</div>
+        <nav id="sidebarNav"></nav>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="doc-main">
+      <article class="doc-article" id="docArticle">
+        <!-- Généré dynamiquement -->
+      </article>
+
+      <!-- PREV / NEXT -->
+      <div class="doc-pagination" id="docPagination"></div>
+
+      <!-- FOOTER FEEDBACK -->
+      <div class="doc-feedback">
+        <p class="feedback-q">Cette page vous a-t-elle aidé ?</p>
+        <div class="feedback-btns">
+          <button class="feedback-btn" onclick="sendFeedback(true)">👍 Oui</button>
+          <button class="feedback-btn" onclick="sendFeedback(false)">👎 Non</button>
+        </div>
+        <div class="feedback-thanks" id="feedbackThanks"></div>
+      </div>
+    </main>
+
+    <!-- TABLE DES MATIÈRES -->
+    <aside class="doc-toc" id="docToc">
+      <div class="toc-label">Sur cette page</div>
+      <nav id="tocNav"></nav>
+    </aside>
+
+  </div>
+
+  <script src="js/docs.js"></script>
+</body>
+</html>
