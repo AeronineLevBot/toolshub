@@ -1,4 +1,8 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+
+  if (window.initToolsFromApi) {
+    await window.initToolsFromApi();
+  }
 
   Cart.setFilter("all");
   renderCart([]);

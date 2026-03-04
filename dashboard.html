@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="css/reset.css"/>
   <link rel="stylesheet" href="css/dashboard.css"/>
   <link rel="icon" type="image/png" href="/favicon.png">
-
 </head>
 <body>
 
@@ -30,225 +29,212 @@
 
     <!-- SIDEBAR -->
     <aside class="dash-sidebar">
-
-      <!-- Section utilisateur -->
       <div class="admin-side-label">Navigation</div>
-      <button class="dash-side-btn active" onclick="showTab('purchases')">
-        🧰 Mes outils
-      </button>
-      <button class="dash-side-btn" onclick="showTab('servers')">
-        🖥️ Mes serveurs
-      </button>
-      <button class="dash-side-btn" onclick="showTab('billing')">
-        💳 Facturation
-      </button>
-      <button class="dash-side-btn" onclick="showTab('settings')">
-        ⚙️ Paramètres
-      </button>
-
-      <!-- Section admin injectée dynamiquement -->
+      <button class="dash-side-btn active" onclick="showTab('purchases')">🧰 Mes outils</button>
+      <button class="dash-side-btn" onclick="showTab('servers')">🖥️ Mes serveurs</button>
+      <button class="dash-side-btn" onclick="showTab('billing')">💳 Facturation</button>
+      <button class="dash-side-btn" onclick="showTab('settings')">⚙️ Paramètres</button>
       <div id="adminSidebarSlot"></div>
-
       <div class="dash-side-sep"></div>
       <a href="docs.html" class="dash-side-btn">📖 Documentation</a>
       <a href="index.html" class="dash-side-btn">🛒 Catalogue</a>
     </aside>
 
     <!-- MAIN -->
-    <main class="dash-main">
+    <main class="dash-main" id="dashContent">
 
-      <!-- TAB : MES OUTILS -->
-      <section class="dash-tab active" id="tab-purchases">
-        <div class="dash-section-header">
-          <div>
-            <h1 class="dash-title">Mes outils</h1>
-            <p class="dash-subtitle">Gérez et configurez vos outils actifs.</p>
-          </div>
-          <a href="index.html" class="btn-primary">+ Ajouter un outil</a>
-        </div>
-        <div class="dash-empty" id="emptyPurchases">
-          <div class="dash-empty-icon">🧰</div>
-          <h3>Aucun outil actif</h3>
-          <p>Vous n'avez encore souscrit à aucun outil.</p>
-          <a href="index.html" class="btn-primary">Découvrir le catalogue</a>
-        </div>
-        <div class="dash-tools-grid" id="purchasedTools"></div>
-      </section>
+      <!-- ═══════════════════════════════════
+           CONTENU PRINCIPAL (onglets normaux)
+      ════════════════════════════════════ -->
+      <div id="dashMainContent">
 
-      <!-- TAB : MES SERVEURS -->
-      <section class="dash-tab" id="tab-servers">
-        <div class="dash-section-header">
-          <div>
-            <h1 class="dash-title">Mes serveurs</h1>
-            <p class="dash-subtitle">Serveurs Discord où vous êtes administrateur.</p>
-          </div>
-        </div>
-        <div class="dash-servers-loading" id="serversLoading">
-          <div class="servers-spinner"></div>
-          <span>Chargement de vos serveurs…</span>
-        </div>
-        <div class="dash-empty" id="emptyServers">
-          <div class="dash-empty-icon">🖥️</div>
-          <h3>Aucun serveur trouvé</h3>
-          <p>Vous n'êtes administrateur d'aucun serveur Discord.</p>
-        </div>
-        <div class="dash-servers-grid" id="serversList"></div>
-      </section>
-
-      <!-- TAB : FACTURATION -->
-      <section class="dash-tab" id="tab-billing">
-        <div class="dash-section-header">
-          <div>
-            <h1 class="dash-title">Facturation</h1>
-            <p class="dash-subtitle">Historique de vos achats et abonnements.</p>
-          </div>
-        </div>
-        <div class="dash-billing-list" id="billingList"></div>
-        <div class="dash-empty" id="emptyBilling">
-          <div class="dash-empty-icon">💳</div>
-          <h3>Aucune transaction</h3>
-          <p>Vos achats apparaîtront ici.</p>
-        </div>
-      </section>
-
-      <!-- TAB : PARAMÈTRES -->
-      <section class="dash-tab" id="tab-settings">
-        <div class="dash-section-header">
-          <div>
-            <h1 class="dash-title">Paramètres</h1>
-            <p class="dash-subtitle">Gérez votre compte ToolsHub.</p>
-          </div>
-        </div>
-        <div class="dash-settings-card">
-          <h2 class="dash-settings-title">Compte Discord</h2>
-          <div class="dash-settings-row">
-            <img class="settings-avatar" id="settingsAvatar" src="" alt=""/>
+        <!-- TAB : MES OUTILS -->
+        <section class="dash-tab active" id="tab-purchases">
+          <div class="dash-section-header">
             <div>
-              <div class="settings-username" id="settingsUsername"></div>
-              <div class="settings-email"    id="settingsEmail"></div>
+              <h1 class="dash-title">Mes outils</h1>
+              <p class="dash-subtitle">Gérez et configurez vos outils actifs.</p>
+            </div>
+            <a href="index.html" class="btn-primary">+ Ajouter un outil</a>
+          </div>
+          <div class="dash-empty" id="emptyPurchases">
+            <div class="dash-empty-icon">🧰</div>
+            <h3>Aucun outil actif</h3>
+            <p>Vous n'avez encore souscrit à aucun outil.</p>
+            <a href="index.html" class="btn-primary">Découvrir le catalogue</a>
+          </div>
+          <div class="dash-tools-grid" id="purchasedTools"></div>
+        </section>
+
+        <!-- TAB : MES SERVEURS -->
+        <section class="dash-tab" id="tab-servers">
+          <div class="dash-section-header">
+            <div>
+              <h1 class="dash-title">Mes serveurs</h1>
+              <p class="dash-subtitle">Serveurs Discord où vous êtes administrateur.</p>
             </div>
           </div>
-        </div>
-        <div class="dash-settings-card danger-card">
-          <h2 class="dash-settings-title">Zone dangereuse</h2>
-          <p class="dash-settings-desc">
-            La suppression de votre compte est irréversible. Toutes vos données
-            et abonnements seront perdus.
-          </p>
-          <button class="btn-danger">Supprimer mon compte</button>
-        </div>
-      </section>
+          <div class="dash-servers-loading" id="serversLoading">
+            <div class="servers-spinner"></div>
+            <span>Chargement de vos serveurs…</span>
+          </div>
+          <div class="dash-empty" id="emptyServers">
+            <div class="dash-empty-icon">🖥️</div>
+            <h3>Aucun serveur trouvé</h3>
+            <p>Vous n'êtes administrateur d'aucun serveur Discord.</p>
+          </div>
+          <div class="dash-servers-grid" id="serversList"></div>
+        </section>
 
-      <!-- ═══════════════════════════════
-           TABS ADMIN
-      ═══════════════════════════════ -->
+        <!-- TAB : FACTURATION -->
+        <section class="dash-tab" id="tab-billing">
+          <div class="dash-section-header">
+            <div>
+              <h1 class="dash-title">Facturation</h1>
+              <p class="dash-subtitle">Historique de vos achats et abonnements.</p>
+            </div>
+          </div>
+          <div class="dash-billing-list" id="billingList"></div>
+          <div class="dash-empty" id="emptyBilling">
+            <div class="dash-empty-icon">💳</div>
+            <h3>Aucune transaction</h3>
+            <p>Vos achats apparaîtront ici.</p>
+          </div>
+        </section>
 
-      <!-- TAB : VUE D'ENSEMBLE -->
-      <section class="dash-tab" id="tab-admin">
-        <div class="dash-section-header">
-          <div>
-            <h1 class="dash-title">📊 Vue d'ensemble</h1>
-            <p class="dash-subtitle">Statistiques globales de la plateforme ToolsHub.</p>
+        <!-- TAB : PARAMÈTRES -->
+        <section class="dash-tab" id="tab-settings">
+          <div class="dash-section-header">
+            <div>
+              <h1 class="dash-title">Paramètres</h1>
+              <p class="dash-subtitle">Gérez votre compte ToolsHub.</p>
+            </div>
           </div>
-          <button class="btn-primary" onclick="loadAdminData()">🔄 Actualiser</button>
-        </div>
-        <div class="admin-stats-grid">
-          <div class="admin-stat-card">
-            <div class="admin-stat-icon">👥</div>
-            <div class="admin-stat-value" id="statUsers">—</div>
-            <div class="admin-stat-label">Utilisateurs</div>
+          <div class="dash-settings-card">
+            <h2 class="dash-settings-title">Compte Discord</h2>
+            <div class="dash-settings-row">
+              <img class="settings-avatar" id="settingsAvatar" src="" alt=""/>
+              <div>
+                <div class="settings-username" id="settingsUsername"></div>
+                <div class="settings-email"    id="settingsEmail"></div>
+              </div>
+            </div>
           </div>
-          <div class="admin-stat-card">
-            <div class="admin-stat-icon">🧰</div>
-            <div class="admin-stat-value" id="statPurchases">—</div>
-            <div class="admin-stat-label">Licences actives</div>
+          <div class="dash-settings-card danger-card">
+            <h2 class="dash-settings-title">Zone dangereuse</h2>
+            <p class="dash-settings-desc">
+              La suppression de votre compte est irréversible. Toutes vos données
+              et abonnements seront perdus.
+            </p>
+            <button class="btn-danger">Supprimer mon compte</button>
           </div>
-          <div class="admin-stat-card">
-            <div class="admin-stat-icon">💰</div>
-            <div class="admin-stat-value" id="statRevenue">—</div>
-            <div class="admin-stat-label">Revenus totaux</div>
-          </div>
-        </div>
-        <!-- Aperçu rapide des derniers utilisateurs -->
-        <div class="admin-section-title" style="margin-top:8px">Derniers inscrits</div>
-        <div id="adminRecentList" class="admin-users-list">
-          <div class="admin-loading">Chargement…</div>
-        </div>
-      </section>
+        </section>
 
-      <!-- TAB : UTILISATEURS -->
-      <section class="dash-tab" id="tab-admin-users">
-        <div class="dash-section-header">
-          <div>
-            <h1 class="dash-title">👥 Utilisateurs</h1>
-            <p class="dash-subtitle">Gestion complète des comptes utilisateurs.</p>
+        <!-- TAB : VUE D'ENSEMBLE ADMIN -->
+        <section class="dash-tab" id="tab-admin">
+          <div class="dash-section-header">
+            <div>
+              <h1 class="dash-title">📊 Vue d'ensemble</h1>
+              <p class="dash-subtitle">Statistiques globales de la plateforme ToolsHub.</p>
+            </div>
+            <button class="btn-primary" onclick="loadAdminData()">🔄 Actualiser</button>
           </div>
-          <button class="btn-primary" onclick="loadAdminUsers()">🔄 Actualiser</button>
-        </div>
-        <div class="admin-search-bar">
-          <input
-            class="admin-search-input"
-            id="adminSearchInput"
-            type="text"
-            placeholder="🔍 Rechercher par nom ou ID…"
-            oninput="filterAdminUsers()"
-          />
-        </div>
-        <div id="adminUsersList" class="admin-users-list">
-          <div class="admin-loading">Chargement…</div>
-        </div>
-      </section>
+          <div class="admin-stats-grid">
+            <div class="admin-stat-card">
+              <div class="admin-stat-icon">👥</div>
+              <div class="admin-stat-value" id="statUsers">—</div>
+              <div class="admin-stat-label">Utilisateurs</div>
+            </div>
+            <div class="admin-stat-card">
+              <div class="admin-stat-icon">🧰</div>
+              <div class="admin-stat-value" id="statPurchases">—</div>
+              <div class="admin-stat-label">Licences actives</div>
+            </div>
+            <div class="admin-stat-card">
+              <div class="admin-stat-icon">💰</div>
+              <div class="admin-stat-value" id="statRevenue">—</div>
+              <div class="admin-stat-label">Revenus totaux</div>
+            </div>
+          </div>
+          <div class="admin-section-title" style="margin-top:8px">Derniers inscrits</div>
+          <div id="adminRecentList" class="admin-users-list">
+            <div class="admin-loading">Chargement…</div>
+          </div>
+        </section>
 
-      <!-- TAB : LICENCES -->
-      <section class="dash-tab" id="tab-admin-licenses">
-        <div class="dash-section-header">
-          <div>
-            <h1 class="dash-title">🧰 Licences</h1>
-            <p class="dash-subtitle">Vue globale de toutes les licences actives.</p>
+        <!-- TAB : UTILISATEURS ADMIN -->
+        <section class="dash-tab" id="tab-admin-users">
+          <div class="dash-section-header">
+            <div>
+              <h1 class="dash-title">👥 Utilisateurs</h1>
+              <p class="dash-subtitle">Gestion complète des comptes utilisateurs.</p>
+            </div>
+            <button class="btn-primary" onclick="loadAdminUsers()">🔄 Actualiser</button>
           </div>
-          <button class="btn-primary" onclick="loadAdminLicenses()">🔄 Actualiser</button>
-        </div>
-        <div id="adminLicensesList" class="admin-users-list">
-          <div class="admin-loading">Chargement…</div>
-        </div>
-      </section>
+          <div class="admin-search-bar">
+            <input class="admin-search-input" id="adminSearchInput" type="text"
+              placeholder="🔍 Rechercher par nom ou ID…" oninput="filterAdminUsers()"/>
+          </div>
+          <div id="adminUsersList" class="admin-users-list">
+            <div class="admin-loading">Chargement…</div>
+          </div>
+        </section>
 
-      <!-- TAB : ARTICLES / OUTILS -->
-      <section class="dash-tab" id="tab-admin-tools">
-        <div class="dash-section-header">
-          <div>
-            <h1 class="dash-title">🧩 Articles / Outils</h1>
-            <p class="dash-subtitle">Gérez le catalogue d'outils de la plateforme.</p>
+        <!-- TAB : LICENCES ADMIN -->
+        <section class="dash-tab" id="tab-admin-licenses">
+          <div class="dash-section-header">
+            <div>
+              <h1 class="dash-title">🧰 Licences</h1>
+              <p class="dash-subtitle">Vue globale de toutes les licences actives.</p>
+            </div>
+            <button class="btn-primary" onclick="loadAdminLicenses()">🔄 Actualiser</button>
           </div>
-        </div>
-        <div class="dash-tools-grid" id="adminToolsCatalog"></div>
-      </section>
+          <div id="adminLicensesList" class="admin-users-list">
+            <div class="admin-loading">Chargement…</div>
+          </div>
+        </section>
 
-      <!-- TAB : SÉCURITÉ -->
-      <section class="dash-tab" id="tab-admin-security">
-        <div class="dash-section-header">
-          <div>
-            <h1 class="dash-title">🔒 Sécurité</h1>
-            <p class="dash-subtitle">Accès admin, logs et actions sensibles.</p>
+        <!-- TAB : ARTICLES ADMIN -->
+        <section class="dash-tab" id="tab-admin-tools">
+          <div class="dash-section-header">
+            <div>
+              <h1 class="dash-title">🧩 Articles / Outils</h1>
+              <p class="dash-subtitle">Gérez le catalogue d'outils de la plateforme.</p>
+            </div>
           </div>
-        </div>
-        <div class="dash-settings-card">
-          <h2 class="dash-settings-title">Administrateurs actuels</h2>
-          <div id="adminSecurityAdminList" class="admin-users-list" style="margin-top:0"></div>
-        </div>
-        <div class="dash-settings-card danger-card" style="margin-top:16px">
-          <h2 class="dash-settings-title">Actions globales</h2>
-          <p class="dash-settings-desc">Ces actions affectent l'ensemble de la plateforme.</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn-danger" onclick="adminPurgeInactiveUsers()">
-              🗑️ Purger comptes inactifs
-            </button>
-            <button class="btn-danger" onclick="adminRevokeAllExpired()">
-              🚫 Révoquer licences expirées
-            </button>
+          <div class="dash-tools-grid" id="adminToolsCatalog"></div>
+        </section>
+
+        <!-- TAB : SÉCURITÉ ADMIN -->
+        <section class="dash-tab" id="tab-admin-security">
+          <div class="dash-section-header">
+            <div>
+              <h1 class="dash-title">🔒 Sécurité</h1>
+              <p class="dash-subtitle">Accès admin, logs et actions sensibles.</p>
+            </div>
           </div>
-        </div>
-      </section>
+          <div class="dash-settings-card">
+            <h2 class="dash-settings-title">Administrateurs actuels</h2>
+            <div id="adminSecurityAdminList" class="admin-users-list" style="margin-top:0"></div>
+          </div>
+          <div class="dash-settings-card danger-card" style="margin-top:16px">
+            <h2 class="dash-settings-title">Actions globales</h2>
+            <p class="dash-settings-desc">Ces actions affectent l'ensemble de la plateforme.</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn-danger" onclick="adminPurgeInactiveUsers()">🗑️ Purger comptes inactifs</button>
+              <button class="btn-danger" onclick="adminRevokeAllExpired()">🚫 Révoquer licences expirées</button>
+            </div>
+          </div>
+        </section>
+
+      </div>
+      <!-- /dashMainContent -->
+
+      <!-- ═══════════════════════════════════
+           PAGE DMALL INLINE
+           (injectée dynamiquement par JS)
+      ════════════════════════════════════ -->
+      <!-- #dmallInlinePage sera créé ici par openDmallPage() -->
 
     </main>
   </div>
@@ -351,8 +337,6 @@
         <button class="modal-close" onclick="closeAdminUserModal()">✕</button>
       </div>
       <div class="modal-body">
-
-        <!-- Infos compte -->
         <div class="modal-section">
           <h3 class="modal-section-title">👤 Informations du compte</h3>
           <div class="admin-info-grid">
@@ -374,14 +358,10 @@
             </div>
           </div>
         </div>
-
-        <!-- Licences possédées -->
         <div class="modal-section">
           <h3 class="modal-section-title">🧰 Licences possédées</h3>
           <div id="adminModalTools" class="modal-tools-list"></div>
         </div>
-
-        <!-- Ajouter une licence -->
         <div class="modal-section">
           <h3 class="modal-section-title">➕ Ajouter une licence</h3>
           <div class="admin-add-tool-form">
@@ -397,29 +377,18 @@
             <button class="btn-primary" onclick="adminAddTool()">➕ Ajouter</button>
           </div>
         </div>
-
-        <!-- Note interne -->
         <div class="modal-section">
           <h3 class="modal-section-title">📝 Note interne</h3>
-          <textarea
-            class="admin-note-input"
-            id="adminModalNote"
-            placeholder="Ajouter une note interne sur cet utilisateur…"
-            rows="3"
-          ></textarea>
+          <textarea class="admin-note-input" id="adminModalNote"
+            placeholder="Ajouter une note interne sur cet utilisateur…" rows="3"></textarea>
           <button class="btn-tool primary" style="margin-top:8px" onclick="adminSaveNote()">
             💾 Sauvegarder la note
           </button>
         </div>
-
       </div>
       <div class="modal-footer">
-        <button class="btn-danger" style="margin-right:auto" onclick="adminRevokeAllLicenses()">
-          🚫 Révoquer tout
-        </button>
-        <button class="btn-danger" onclick="adminDeleteUser()">
-          🗑️ Supprimer l'utilisateur
-        </button>
+        <button class="btn-danger" style="margin-right:auto" onclick="adminRevokeAllLicenses()">🚫 Révoquer tout</button>
+        <button class="btn-danger" onclick="adminDeleteUser()">🗑️ Supprimer l'utilisateur</button>
         <button class="btn-tool" onclick="closeAdminUserModal()">Fermer</button>
       </div>
     </div>

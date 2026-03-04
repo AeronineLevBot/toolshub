@@ -1,3 +1,7 @@
+/* ═══════════════════════════════════════
+   UI.JS — Rendu des composants
+═══════════════════════════════════════ */
+
 function buildBadges(badges) {
   const map = {
     new:     '<span class="badge badge-new">✨ Nouveau</span>',
@@ -5,7 +9,7 @@ function buildBadges(badges) {
     popular: '<span class="badge badge-popular">⭐ Populaire</span>',
     pro:     '<span class="badge badge-pro">💎 Pro</span>',
   };
-  return badges.map(b => map[b] || "").join("");
+  return (badges || []).map(b => map[b] || "").join("");
 }
 
 function buildCard(tool, isSelected) {
@@ -15,7 +19,7 @@ function buildCard(tool, isSelected) {
 
   return `
     <div class="tool-card ${isSelected ? "selected" : ""}" data-id="${tool.id}"
-      onclick="openToolModal(${tool.id})">
+      onclick="openToolModal('${tool.id}')">
       <div class="card-top">
         <div class="card-icon">${tool.icon}</div>
         <div class="card-badges">${buildBadges(tool.badges)}</div>
@@ -25,13 +29,13 @@ function buildCard(tool, isSelected) {
         <div class="card-desc">${tool.desc}</div>
       </div>
       <div class="card-features">
-        ${tool.features.map(f => `<span class="feature-tag">${f}</span>`).join("")}
+        ${(tool.features || []).map(f => `<span class="feature-tag">${f}</span>`).join("")}
       </div>
       <div class="card-footer">
         <div class="card-price">${priceStr}</div>
         <button
           class="btn-select ${isSelected ? "btn-select-remove" : "btn-select-add"}"
-          onclick="event.stopPropagation(); Cart.toggle(${tool.id})">
+          onclick="event.stopPropagation(); Cart.toggle('${tool.id}')">
           ${isSelected ? "✕ Retirer" : "+ Ajouter"}
         </button>
       </div>
@@ -40,6 +44,7 @@ function buildCard(tool, isSelected) {
 
 function renderGrid(filter, selectedIds) {
   const grid  = document.getElementById("toolsGrid");
+  if (!grid) return;
   const tools = filter === "all"
     ? TOOLS_DATA
     : TOOLS_DATA.filter(t => t.category === filter);
@@ -55,6 +60,7 @@ function renderGrid(filter, selectedIds) {
 
 function renderFilters(activeFilter, onSelect) {
   const container = document.getElementById("filterTabs");
+  if (!container) return;
   container.innerHTML = CATEGORIES.map(c => `
     <button class="tab ${c.id === activeFilter ? "active" : ""}" data-cat="${c.id}">
       ${c.label}
@@ -69,6 +75,7 @@ function renderCart(items) {
   const container = document.getElementById("cartItems");
   const totalEl   = document.getElementById("cartTotal");
   const countEl   = document.getElementById("cartCount");
+  if (!container || !totalEl || !countEl) return;
 
   container.innerHTML = items.length === 0
     ? `<div class="cart-empty">🛒<br><br>Votre panier est vide.<br>Ajoutez des outils pour commencer !</div>`
@@ -81,7 +88,7 @@ function renderCart(items) {
               ${t.price === 0 ? "Gratuit" : t.price.toFixed(2) + "€/mois"}
             </div>
           </div>
-          <button class="cart-item-remove" onclick="Cart.toggle(${t.id})">✕</button>
+          <button class="cart-item-remove" onclick="Cart.toggle('${t.id}')">✕</button>
         </div>`).join("");
 
   const total = items.reduce((s, t) => s + t.price, 0);
@@ -89,9 +96,13 @@ function renderCart(items) {
   countEl.textContent = items.length;
 }
 
-/* ── TOOL MODAL ── */
+/* ══════════════════════════════════
+   TOOL MODAL
+══════════════════════════════════ */
 function openToolModal(id) {
-  const tool       = TOOLS_DATA.find(t => t.id === id);
+  const tool = TOOLS_DATA.find(t => String(t.id) === String(id));
+  if (!tool) return;
+
   const overlay    = document.getElementById("toolModalOverlay");
   const content    = document.getElementById("toolModalContent");
   const isSelected = Cart.isSelected(id);
@@ -118,23 +129,20 @@ function openToolModal(id) {
     </div>
 
     <div class="tool-modal-body">
-
       <div class="tool-modal-section">
         <div class="tool-modal-section-title">📄 Description</div>
         <p class="tool-modal-desc">${tool.longDesc}</p>
       </div>
-
       <div class="tool-modal-section">
         <div class="tool-modal-section-title">✅ Fonctionnalités</div>
         <div class="tool-modal-features">
-          ${tool.fullFeatures.map(f => `
+          ${(tool.fullFeatures || []).map(f => `
             <div class="modal-feature-item">
               <span class="modal-feature-check">✓</span>
               <span>${f}</span>
             </div>`).join("")}
         </div>
       </div>
-
     </div>
 
     <div class="tool-modal-footer">
@@ -142,7 +150,7 @@ function openToolModal(id) {
       <button
         class="btn-select ${isSelected ? "btn-select-remove" : "btn-select-add"} btn-modal-add"
         id="modalCartBtn"
-        onclick="modalToggleCart(${tool.id})">
+        onclick="modalToggleCart('${tool.id}')">
         ${isSelected ? "✕ Retirer du panier" : "🛒 Ajouter au panier"}
       </button>
     </div>`;
@@ -155,64 +163,32 @@ function modalToggleCart(id) {
   Cart.toggle(id);
   const isSelected = Cart.isSelected(id);
   const btn        = document.getElementById("modalCartBtn");
-  btn.className    = `btn-select ${isSelected ? "btn-select-remove" : "btn-select-add"} btn-modal-add`;
-  btn.textContent  = isSelected ? "✕ Retirer du panier" : "🛒 Ajouter au panier";
+  if (!btn) return;
+  btn.className   = `btn-select ${isSelected ? "btn-select-remove" : "btn-select-add"} btn-modal-add`;
+  btn.textContent = isSelected ? "✕ Retirer du panier" : "🛒 Ajouter au panier";
 }
 
 function closeToolModal() {
-  document.getElementById("toolModalOverlay").classList.remove("open");
+  const overlay = document.getElementById("toolModalOverlay");
+  if (overlay) overlay.classList.remove("open");
   document.body.style.overflow = "";
 }
 
-/* ── CHECKOUT ── */
-function renderCheckout(items) {
-  const total = items.reduce((s, t) => s + t.price, 0);
-  return `
-    <div class="checkout-title">💳 Paiement</div>
-    <div class="checkout-sub">Récapitulatif de votre commande</div>
-    <div class="checkout-summary">
-      ${items.map(t => `
-        <div class="checkout-summary-item">
-          <span>${t.icon} ${t.name}</span>
-          <span>${t.price === 0 ? "Gratuit" : t.price.toFixed(2) + "€"}</span>
-        </div>`).join("")}
-      <div class="checkout-summary-item total">
-        <span>Total / mois</span>
-        <span>${total === 0 ? "Gratuit" : total.toFixed(2) + "€"}</span>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Email</label>
-      <input type="email" class="form-input" placeholder="votre@email.com"/>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Numéro de carte</label>
-      <input type="text" class="form-input" id="cardNumber"
-        placeholder="4242 4242 4242 4242" maxlength="19"/>
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Expiration</label>
-        <input type="text" class="form-input" id="cardExp" placeholder="MM/AA" maxlength="5"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">CVC</label>
-        <input type="text" class="form-input" placeholder="123" maxlength="3"/>
-      </div>
-    </div>
-    <button class="btn-primary btn-full" id="btnPay" style="margin-top:8px">
-      🚀 Confirmer — ${total === 0 ? "Gratuit" : total.toFixed(2) + "€/mois"}
-    </button>`;
+function handleToolOverlayClick(e) {
+  if (e.target === document.getElementById("toolModalOverlay")) {
+    closeToolModal();
+  }
 }
 
-function renderSuccess() {
-  return `
-    <div class="success-screen">
-      <span class="success-icon">🎉</span>
-      <div class="success-title">Paiement confirmé !</div>
-      <div class="success-sub">
-        Vos outils sont maintenant actifs.<br>
-        Vérifiez votre email pour les accès.
-      </div>
-    </div>`;
-}
+/* ══════════════════════════════════
+   EXPOSITION GLOBALE
+   Nécessaire pour les onclick="" HTML
+══════════════════════════════════ */
+window.openToolModal          = openToolModal;
+window.closeToolModal         = closeToolModal;
+window.modalToggleCart        = modalToggleCart;
+window.handleToolOverlayClick = handleToolOverlayClick;
+window.buildBadges            = buildBadges;
+window.renderGrid             = renderGrid;
+window.renderFilters          = renderFilters;
+window.renderCart             = renderCart;

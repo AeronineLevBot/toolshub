@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@upstash/redis": "^1.36.3",
+    "axios": "^1.13.6",
+    "discord.js-selfbot-v13": "^3.7.1",
+    "dotenv": "^16.6.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "http-proxy-middleware": "^3.0.5"
+  }
+}
